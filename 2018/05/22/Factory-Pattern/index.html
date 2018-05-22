@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="你会使用GitHub？每个接触过编程的人都多多少少听说过GitHub,但是你会用这个神奇的工具？下文就给你带来GitHub的食用方式 代码仓库">
+<meta name="description" content="这次来介绍设计模式中最常用的模式，工厂模式。 概念模式类别：创建型模式 什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。 1Green color = new Green(); 例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的 1Red color = new Red(); 而我">
 <meta property="og:type" content="article">
-<meta property="og:title" content="how-to-use-github">
-<meta property="og:url" content="https://wiizard-chen.github.io/wiizard_chen.github.io/./2017/10/14/how-to-use-github/index.html">
+<meta property="og:title" content="工厂模式">
+<meta property="og:url" content="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/22/Factory-Pattern/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="你会使用GitHub？每个接触过编程的人都多多少少听说过GitHub,但是你会用这个神奇的工具？下文就给你带来GitHub的食用方式 代码仓库">
-<meta property="og:updated_time" content="2017-10-16T13:36:38.484Z">
+<meta property="og:description" content="这次来介绍设计模式中最常用的模式，工厂模式。 概念模式类别：创建型模式 什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。 1Green color = new Green(); 例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的 1Red color = new Red(); 而我">
+<meta property="og:updated_time" content="2018-05-22T16:27:58.589Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="how-to-use-github">
-<meta name="twitter:description" content="你会使用GitHub？每个接触过编程的人都多多少少听说过GitHub,但是你会用这个神奇的工具？下文就给你带来GitHub的食用方式 代码仓库">
+<meta name="twitter:title" content="工厂模式">
+<meta name="twitter:description" content="这次来介绍设计模式中最常用的模式，工厂模式。 概念模式类别：创建型模式 什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。 1Green color = new Green(); 例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的 1Red color = new Red(); 而我">
 
 
 
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2017/10/14/how-to-use-github/"/>
+  <link rel="canonical" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/22/Factory-Pattern/"/>
 
 
 
 
 
-  <title>how-to-use-github | Hexo</title>
+  <title>工厂模式 | Hexo</title>
   
 
 
@@ -231,7 +231,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2017/10/14/how-to-use-github/">
+    <link itemprop="mainEntityOfPage" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/22/Factory-Pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="John Doe">
@@ -248,7 +248,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">how-to-use-github</h1>
+          <h1 class="post-title" itemprop="name headline">工厂模式</h1>
         
 
         <div class="post-meta">
@@ -260,8 +260,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-14T11:40:46+08:00">
-                2017-10-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T00:12:26+08:00">
+                2018-05-22
               </time>
             
 
@@ -298,8 +298,15 @@
       
 
       
-        <h1 id="你会使用GitHub？"><a href="#你会使用GitHub？" class="headerlink" title="你会使用GitHub？"></a>你会使用GitHub？</h1><p>每个接触过编程的人都多多少少听说过<a href="https://github.com/" target="_blank" rel="external">GitHub</a>,但是你会用这个神奇的工具？下文就给你带来<a href="https://github.com/" target="_blank" rel="external">GitHub</a>的食用方式</p>
-<h1 id="代码仓库"><a href="#代码仓库" class="headerlink" title="代码仓库"></a>代码仓库</h1>
+        <p>这次来介绍设计模式中最常用的模式，工厂模式。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>模式类别：创建型模式</p>
+<p>什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Green color = <span class="keyword">new</span> Green();</div></pre></td></tr></table></figure>
+<p>例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Red color = <span class="keyword">new</span> Red();</div></pre></td></tr></table></figure>
+<p>而我们的创建型模式就是为创建实例增加灵活性和扩展性，下面一一介绍几个常用的工厂模式</p>
+<h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><p>简单工厂模式并不算一种设计模式，因为实在是太简单了，直接上代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Color</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -323,8 +330,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/05/SQL-without-In-Query/" rel="next" title="SQL怎么避免使用IN操作">
-                <i class="fa fa-chevron-left"></i> SQL怎么避免使用IN操作
+              <a href="/2018/05/18/Strategy-Pattern/" rel="next" title="策略模式">
+                <i class="fa fa-chevron-left"></i> 策略模式
               </a>
             
           </div>
@@ -332,10 +339,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/10/DataBase-TimeOut-Reason/" rel="prev" title="数据库锁表与TimeOut的原因">
-                数据库锁表与TimeOut的原因 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -449,7 +452,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#你会使用GitHub？"><span class="nav-number">1.</span> <span class="nav-text">你会使用GitHub？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码仓库"><span class="nav-number">2.</span> <span class="nav-text">代码仓库</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单工厂模式"><span class="nav-number">2.</span> <span class="nav-text">简单工厂模式</span></a></li></ol></div>
             
 
           </div>
