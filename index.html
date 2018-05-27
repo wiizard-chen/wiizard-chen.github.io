@@ -181,7 +181,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -191,7 +191,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -257,7 +257,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T00:12:26+08:00">
                 2018-05-22
@@ -311,7 +311,7 @@
 <p>上面的代码就是常用的简单工厂模式显示方式。枚举+接口（抽象类）的模式。工厂模式为创建实例增加了灵活性。例如有这样的情景，在代码项目要把所有RedColor替换为GreenColor，那么对于这个需求，只要的ColorFactory修改一次就马上完成了。如果是用new创建实例。那么有多少个new RedColor，就要修改多少次。</p>
 <h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><p>概念：工厂方法定义了一个创建对象的接口，但由子类决定要实例化的类是哪一个。工厂方法把实例化推迟到子类。</p>
 <p>第一次接触工厂方法的模式的人，这个概念读起来云里梦里，根本不知道是什么意思。不用急我们通过一个奶茶铺情景来解释一下什么叫工厂方法模式。</p>
-<h3 id="情景描述"><a href="#情景描述" class="headerlink" title="情景描述"></a>情景描述</h3><p>例如现在你要买下午茶，在app上看到两个贡茶的店铺，这两个店铺除了官方制定的饮料，各自还出品了一些奶茶。现在用代码来展示奶茶与奶茶铺之间的关系。<br><!-- 在什么情景下，最能体现工厂方法模式。汽车组装就是一个很好场景了。一部汽车有各种零件，有发动机，底盘，轮胎，外壳等等。 --></p>
+<h3 id="情景描述"><a href="#情景描述" class="headerlink" title="情景描述"></a>情景描述</h3><p>例如现在你要买下午茶，在app上看到两个贡茶的店铺，这两个店铺除了官方制定的饮料，各自还出品了一些奶茶。现在用代码来展示奶茶与奶茶铺之间的关系。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 奶茶抽象类</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="comment">// 添加茶包</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addTea</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">// 添加牛奶</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addMilk</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">// 包装奶茶</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">pack</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 奶茶店抽象类</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTeaStore</span> </span>&#123;</div><div class="line">    MilkyTea milkyTea;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> MilkyTea <span class="title">orderMilkyTea</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        createPizza(type);</div><div class="line">        milkyTea.addTea();</div><div class="line">        milkyTea.addMilk();</div><div class="line">        milkyTea.pack();</div><div class="line">        <span class="keyword">return</span> milkyTea;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">createPizza</span><span class="params">(String type)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 红茶</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyBlackTea</span> <span class="keyword">extends</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTea</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add black tea"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMilk</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add milk"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pack</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"normal pack"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 绿茶</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyGreenTea</span> <span class="keyword">extends</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTea</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add green tea"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMilk</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add yoghourt"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pack</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"special pack"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 奶茶店</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GongChaStore</span> <span class="keyword">extends</span> <span class="title">MilkyTeaStore</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createPizza</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (type) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">"BlackTea"</span>:</div><div class="line">                <span class="keyword">this</span>.milkyTea = <span class="keyword">new</span> MilkyBlackTea();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"GreenTea"</span>:</div><div class="line">                <span class="keyword">this</span>.milkyTea = <span class="keyword">new</span> MilkyGreenTea();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">this</span>.milkyTea = <span class="keyword">new</span> MilkyBlackTea();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        MilkyTeaStore store = <span class="keyword">new</span> GongChaStore();</div><div class="line">        store.orderMilkyTea(<span class="string">"BlackTea"</span>);</div><div class="line">        store.orderMilkyTea(<span class="string">"GreenTea"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">add black tea</div><div class="line">add milk</div><div class="line">normal pack</div><div class="line"></div><div class="line">add green tea</div><div class="line">add yoghourt</div><div class="line">special pack</div></pre></td></tr></table></figure>
 <p>这个示例代码就是用工厂方法模式，我们生成具体的奶茶类的时候，不是在奶茶铺的构造函数把所有奶茶类型初始化。而是把这个初始化给延迟到orderMilkyTea这个方法上面去。在代码的角度上，我们只是操作了抽象类，调用抽象类的方法，具体实现方法，调用者并不关心。现在回过头来看看定义</p>
@@ -320,6 +320,11 @@
 <p>现在应该了解工厂方法模式的定义和表示形式是什么了。</p>
 <h3 id="优点和适用性"><a href="#优点和适用性" class="headerlink" title="优点和适用性"></a>优点和适用性</h3><p>适用性 ：当有一个需求，有明确的关系是创建者-产品的关系，就可以使用工厂方法模式了。</p>
 <p>优点：代码复用率提高了，如上面的情景需要添加一个新的奶茶铺，我们创建类的时候只需要把这个奶茶铺特有的奶茶创建就可以了。其他重复的奶茶就不用再一次编写了。</p>
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>概念：提供一个创建一系列相关或相互依赖对象的接口，而无需制定它们的具体类。</p>
+<p>这个定义一样很难理解。老方法，情景加代码。</p>
+<h3 id="情景描述-1"><a href="#情景描述-1" class="headerlink" title="情景描述"></a>情景描述</h3><p>还是奶茶铺，我们知道红茶只是一个抽象概念，具体有祁门红茶，大吉岭红茶，阿萨姆红茶。现在有新的需求，每种红茶都有相对应的奶茶。其实牛奶也有很多品种。实际上是有具体原料厂提供相应的奶茶原料。我们现在要用代码代表它们之间的关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Milk</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span>  <span class="class"><span class="keyword">interface</span> <span class="title">Tea</span> </span>&#123;</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MilkyTeaMaterialFactory</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Tea <span class="title">createTea</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Milk <span class="title">createMilk</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    MilkyTeaMaterialFactory factory;</div><div class="line"></div><div class="line">    Tea tea;</div><div class="line"></div><div class="line">    Milk milk;</div><div class="line"></div><div class="line">    String name;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    MilkyTea(MilkyTeaMaterialFactory factory) &#123;</div><div class="line">        <span class="keyword">this</span>.factory = factory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>待续。。。</p>
 
           
         
@@ -397,7 +402,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-18T00:12:26+08:00">
                 2018-05-18
@@ -546,7 +551,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-12T17:55:41+08:00">
                 2018-05-12
@@ -670,7 +675,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-29T17:06:54+08:00">
                 2018-04-29
@@ -811,7 +816,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-10T22:53:27+08:00">
                 2017-12-10
@@ -930,7 +935,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-14T11:40:46+08:00">
                 2017-10-14
@@ -1050,7 +1055,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-05T16:32:31+08:00">
                 2017-10-05
@@ -1189,7 +1194,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-03T23:58:34+08:00">
                 2017-10-03
@@ -1363,7 +1368,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-03T11:47:30+08:00">
                 2017-10-03
@@ -1496,7 +1501,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">9</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
@@ -1548,7 +1553,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
