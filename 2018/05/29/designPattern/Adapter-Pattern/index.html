@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="如果你写了一段时间代码，适配器模式你肯定不知不觉间就已经用上了。今天就为你来解释适配器模式是怎么一回事 概念模式类别：结构型模式 定义：将一个类的接口转换为另外一个接口。将两个不兼容的接口，转变可以一起工作的接口。 适配器这个东西大家都很熟悉，生活中常见的有，两插插头转换为三插插头。 适用性 已经存在一个类，但是他的接口不适用于你的需求。  你想创造一个复用类，这个类可以与它不相关的类协同工作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="适配器模式">
+<meta property="og:url" content="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/29/designPattern/Adapter-Pattern/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如果你写了一段时间代码，适配器模式你肯定不知不觉间就已经用上了。今天就为你来解释适配器模式是怎么一回事 概念模式类别：结构型模式 定义：将一个类的接口转换为另外一个接口。将两个不兼容的接口，转变可以一起工作的接口。 适配器这个东西大家都很熟悉，生活中常见的有，两插插头转换为三插插头。 适用性 已经存在一个类，但是他的接口不适用于你的需求。  你想创造一个复用类，这个类可以与它不相关的类协同工作。">
+<meta property="og:updated_time" content="2018-07-04T14:45:42.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="适配器模式">
+<meta name="twitter:description" content="如果你写了一段时间代码，适配器模式你肯定不知不觉间就已经用上了。今天就为你来解释适配器模式是怎么一回事 概念模式类别：结构型模式 定义：将一个类的接口转换为另外一个接口。将两个不兼容的接口，转变可以一起工作的接口。 适配器这个东西大家都很熟悉，生活中常见的有，两插插头转换为三插插头。 适用性 已经存在一个类，但是他的接口不适用于你的需求。  你想创造一个复用类，这个类可以与它不相关的类协同工作。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/29/designPattern/Adapter-Pattern/"/>
+
+
+
+
+
+  <title>适配器模式 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Accueil
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/29/designPattern/Adapter-Pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">适配器模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posté le</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-29T22:57:49+08:00">
+                2018-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>如果你写了一段时间代码，适配器模式你肯定不知不觉间就已经用上了。今天就为你来解释适配器模式是怎么一回事</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>模式类别：结构型模式</p>
+<p>定义：将一个类的接口转换为另外一个接口。将两个不兼容的接口，转变可以一起工作的接口。</p>
+<p>适配器这个东西大家都很熟悉，生活中常见的有，两插插头转换为三插插头。</p>
+<h2 id="适用性"><a href="#适用性" class="headerlink" title="适用性"></a>适用性</h2><ul>
+<li><p>已经存在一个类，但是他的接口不适用于你的需求。</p>
+</li>
+<li><p>你想创造一个复用类，这个类可以与它不相关的类协同工作。</p>
+</li>
+<li><p>你想对已存在的子类，但是不能对每一个子类都做相应的适配器。那么你可以对它们的父类做一个相应的适配器。</p>
+</li>
+</ul>
+<h2 id="情景描述"><a href="#情景描述" class="headerlink" title="情景描述"></a>情景描述</h2><p>生活中各种转接口，DVI接口转VGA，USB转type-c，还有充电线。还有一个很常用的情景，相信用过螺丝刀的人，都接触过，螺丝转换头，见得比较多的应该是铜柱了，下面圆头，上面六角孔。下面我们用代码来表示这个转换头（适配器）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 圆孔</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoundHole</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">double</span> radius;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RoundHole</span><span class="params">(<span class="keyword">double</span> radius)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.radius = radius;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> radius;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">fits</span><span class="params">(RoundScrew screw)</span> </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> result;</div><div class="line">        result = <span class="keyword">this</span>.getRadius() &gt;= screw.getRadius();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 圆角螺丝</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoundScrew</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">double</span> radius;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RoundScrew</span><span class="params">(<span class="keyword">double</span> radius)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.radius = radius;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> radius;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SquareScrew</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">double</span> width;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SquareScrew</span><span class="params">(<span class="keyword">double</span> width)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.width = width;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getWidth</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> width;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getSquare</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result;</div><div class="line">        result = Math.pow(<span class="keyword">this</span>.width, <span class="number">2</span>);</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SquareScrewAdapter</span> <span class="keyword">extends</span> <span class="title">RoundScrew</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> SquareScrew squareScrew;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SquareScrewAdapter</span><span class="params">(SquareScrew squareScrew)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.squareScrew = squareScrew;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getRadius</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result;</div><div class="line">        result = (Math.sqrt(Math.pow((squareScrew.getWidth() / <span class="number">2</span>), <span class="number">2</span>) * <span class="number">2</span>));</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        RoundHole hole = <span class="keyword">new</span> RoundHole(<span class="number">5</span>);</div><div class="line">        RoundScrew roundScrew = <span class="keyword">new</span> RoundScrew(<span class="number">5</span>);</div><div class="line">        <span class="keyword">if</span> (hole.fits(roundScrew)) &#123;</div><div class="line">            System.out.println(<span class="string">"RoundScrew r5 fits RoundHole r5"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        SquareScrew smallSquareScrew = <span class="keyword">new</span> SquareScrew(<span class="number">2</span>);</div><div class="line">        SquareScrew largeSquareScrew = <span class="keyword">new</span> SquareScrew(<span class="number">20</span>);</div><div class="line">        SquareScrewAdapter smallSquareScrewAdapter = <span class="keyword">new</span> SquareScrewAdapter(smallSquareScrew );</div><div class="line">        SquareScrewAdapter largeSquareScrewAdapter = <span class="keyword">new</span> SquareScrewAdapter(largeSquareScrew );</div><div class="line">        <span class="keyword">if</span> (hole.fits(smallSquareScrewAdapter)) &#123;</div><div class="line">            System.out.println(<span class="string">"RoundScrew r5 fits RoundHole r5"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (hole.fits(largeSquareScrewAdapter)) &#123;</div><div class="line">            System.out.println(<span class="string">"RoundScrew r5 fits RoundHole r5"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        RoundHole hole = <span class="keyword">new</span> RoundHole(<span class="number">5</span>);</div><div class="line">        RoundScrew roundScrew = <span class="keyword">new</span> RoundScrew(<span class="number">5</span>);</div><div class="line">        <span class="keyword">if</span> (hole.fits(roundScrew)) &#123;</div><div class="line">            System.out.println(<span class="string">"RoundScrew r5 fits RoundHole r5"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        SquareScrew smallSquareScrew = <span class="keyword">new</span> SquareScrew(<span class="number">2</span>);</div><div class="line">        SquareScrew largeSquareScrew = <span class="keyword">new</span> SquareScrew(<span class="number">20</span>);</div><div class="line">        SquareScrewAdapter smallSquareScrewAdapter = <span class="keyword">new</span> SquareScrewAdapter(smallSquareScrew );</div><div class="line">        SquareScrewAdapter largeSquareScrewAdapter = <span class="keyword">new</span> SquareScrewAdapter(largeSquareScrew );</div><div class="line">        <span class="keyword">if</span> (hole.fits(smallSquareScrewAdapter)) &#123;</div><div class="line">            System.out.println(<span class="string">"smallSquareScrew w5 fits RoundHole r5"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (hole.fits(largeSquareScrewAdapter)) &#123;</div><div class="line">            System.out.println(<span class="string">"largeSquareScrew w5 fits RoundHole r5"</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>看完上面的代码，再用通俗点的语言解释一下，适配器模式。那就是让两个不同类型的实例有共同语言，怎么有共同语言呢？类A为类B套上一套伪装成为类B‘。那么类B与类B’就有共同语言了。适配器模式并不是很难的设计模式。常用于原先设计的两个接口互相独立，但是新需求需要他们两个互相协作的时候，就应该使用适配器模式</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/22/designPattern/Factory-Pattern/" rel="next" title="工厂模式">
+                <i class="fa fa-chevron-left"></i> 工厂模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/03/designPattern/Decorator-Pattern/" rel="prev" title="装饰模式">
+                装饰模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Des Matières
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Ensemble
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">articles</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#适用性"><span class="nav-number">2.</span> <span class="nav-text">适用性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情景描述"><span class="nav-number">3.</span> <span class="nav-text">情景描述</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thème &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

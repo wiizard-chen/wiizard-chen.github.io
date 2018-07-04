@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这次来介绍设计模式中最常用的模式，工厂模式。 概念模式类别：创建型模式 什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。 1Green color = new Green(); 例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的 1Red color = new Red(); 而我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工厂模式">
+<meta property="og:url" content="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/22/designPattern/Factory-Pattern/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这次来介绍设计模式中最常用的模式，工厂模式。 概念模式类别：创建型模式 什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。 1Green color = new Green(); 例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的 1Red color = new Red(); 而我">
+<meta property="og:updated_time" content="2018-07-04T14:45:42.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="工厂模式">
+<meta name="twitter:description" content="这次来介绍设计模式中最常用的模式，工厂模式。 概念模式类别：创建型模式 什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。 1Green color = new Green(); 例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的 1Red color = new Red(); 而我">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/22/designPattern/Factory-Pattern/"/>
+
+
+
+
+
+  <title>工厂模式 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Accueil
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wiizard-chen.github.io/wiizard_chen.github.io/./2018/05/22/designPattern/Factory-Pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">工厂模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posté le</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T00:12:26+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这次来介绍设计模式中最常用的模式，工厂模式。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>模式类别：创建型模式</p>
+<p>什么叫创建型模式呢？平时我们创建实例的是用new这个关键字的。实际上这种直接使用new来创建实例的方法是不那么好的，缺少灵活性，扩展性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Green color = <span class="keyword">new</span> Green();</div></pre></td></tr></table></figure>
+<p>例如上面的代码，现在有新的需求需要红色的类，那只能把原先的代码删了，添加一条新的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Red color = <span class="keyword">new</span> Red();</div></pre></td></tr></table></figure>
+<p>而我们的创建型模式就是为创建实例增加灵活性和扩展性，下面一一介绍几个常用的工厂模式</p>
+<h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><p>简单工厂模式并不算一种设计模式，因为实在是太简单了，直接上代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color &#123;</div><div class="line">    RED, GREEN</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ColorBase</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GreenColor</span> <span class="keyword">implements</span> <span class="title">ColorBase</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"green !"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedColor</span> <span class="keyword">implements</span> <span class="title">ColorBase</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"red !"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ColorFactory</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ColorBase <span class="title">getInstance</span><span class="params">(Color sign)</span></span>&#123;</div><div class="line">        ColorBase instance = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">switch</span> (sign)&#123;</div><div class="line">            <span class="keyword">case</span> RED: instance = <span class="keyword">new</span> RedColor(); <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> GREEN: instance = <span class="keyword">new</span> GreenColor();<span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>: instance = <span class="keyword">new</span> RedColor(); <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span>  instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的代码就是常用的简单工厂模式显示方式。枚举+接口（抽象类）的模式。工厂模式为创建实例增加了灵活性。例如有这样的情景，在代码项目要把所有RedColor替换为GreenColor，那么对于这个需求，只要的ColorFactory修改一次就马上完成了。如果是用new创建实例。那么有多少个new RedColor，就要修改多少次。</p>
+<h2 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h2><p>概念：工厂方法定义了一个创建对象的接口，但由子类决定要实例化的类是哪一个。工厂方法把实例化推迟到子类。</p>
+<p>第一次接触工厂方法的模式的人，这个概念读起来云里梦里，根本不知道是什么意思。不用急我们通过一个奶茶铺情景来解释一下什么叫工厂方法模式。</p>
+<h3 id="情景描述"><a href="#情景描述" class="headerlink" title="情景描述"></a>情景描述</h3><p>例如现在你要买下午茶，在app上看到两个贡茶的店铺，这两个店铺除了官方制定的饮料，各自还出品了一些奶茶。现在用代码来展示奶茶与奶茶铺之间的关系。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 奶茶抽象类</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="comment">// 添加茶包</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addTea</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">// 添加牛奶</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">addMilk</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="comment">// 包装奶茶</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">pack</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 奶茶店抽象类</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTeaStore</span> </span>&#123;</div><div class="line">    MilkyTea milkyTea;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> MilkyTea <span class="title">orderMilkyTea</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        createPizza(type);</div><div class="line">        milkyTea.addTea();</div><div class="line">        milkyTea.addMilk();</div><div class="line">        milkyTea.pack();</div><div class="line">        <span class="keyword">return</span> milkyTea;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">createPizza</span><span class="params">(String type)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 红茶</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyBlackTea</span> <span class="keyword">extends</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTea</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add black tea"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMilk</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add milk"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pack</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"normal pack"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 绿茶</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyGreenTea</span> <span class="keyword">extends</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTea</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add green tea"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMilk</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"add yoghourt"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pack</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"special pack"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 奶茶店</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GongChaStore</span> <span class="keyword">extends</span> <span class="title">MilkyTeaStore</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createPizza</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (type) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">"BlackTea"</span>:</div><div class="line">                <span class="keyword">this</span>.milkyTea = <span class="keyword">new</span> MilkyBlackTea();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">"GreenTea"</span>:</div><div class="line">                <span class="keyword">this</span>.milkyTea = <span class="keyword">new</span> MilkyGreenTea();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">this</span>.milkyTea = <span class="keyword">new</span> MilkyBlackTea();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        MilkyTeaStore store = <span class="keyword">new</span> GongChaStore();</div><div class="line">        store.orderMilkyTea(<span class="string">"BlackTea"</span>);</div><div class="line">        store.orderMilkyTea(<span class="string">"GreenTea"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">add black tea</div><div class="line">add milk</div><div class="line">normal pack</div><div class="line"></div><div class="line">add green tea</div><div class="line">add yoghourt</div><div class="line">special pack</div></pre></td></tr></table></figure>
+<p>这个示例代码就是用工厂方法模式，我们生成具体的奶茶类的时候，不是在奶茶铺的构造函数把所有奶茶类型初始化。而是把这个初始化给延迟到orderMilkyTea这个方法上面去。在代码的角度上，我们只是操作了抽象类，调用抽象类的方法，具体实现方法，调用者并不关心。现在回过头来看看定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">工厂方法定义了一个创建对象的接口，但由子类决定要实例化的类是哪一个。工厂方法把实例化推迟到子类。</div></pre></td></tr></table></figure>
+<p>我们在这个奶茶铺情景下，定义两个接口（抽象类）奶茶铺(MilkyStore)和奶茶(MilkyTea)。子类有GongChaStore和MilkyBlackTea、MilkyGreenTea。实例化MilkyTea交给GongChaStore。</p>
+<p>现在应该了解工厂方法模式的定义和表示形式是什么了。</p>
+<h3 id="优点和适用性"><a href="#优点和适用性" class="headerlink" title="优点和适用性"></a>优点和适用性</h3><p>适用性 ：当有一个需求，有明确的关系是创建者-产品的关系，就可以使用工厂方法模式了。</p>
+<p>优点：代码复用率提高了，如上面的情景需要添加一个新的奶茶铺，我们创建类的时候只需要把这个奶茶铺特有的奶茶创建就可以了。其他重复的奶茶就不用再一次编写了。</p>
+<h2 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h2><p>概念：提供一个创建一系列相关或相互依赖对象的接口，而无需制定它们的具体类。</p>
+<p>这个定义一样很难理解。老方法，情景加代码。</p>
+<h3 id="情景描述-1"><a href="#情景描述-1" class="headerlink" title="情景描述"></a>情景描述</h3><p>还是奶茶铺，我们知道红茶只是一个抽象概念，具体有祁门红茶，大吉岭红茶，阿萨姆红茶。现在有新的需求，每种红茶都有相对应的奶茶。其实牛奶也有很多品种。实际上是有具体原料厂提供相应的奶茶原料。我们现在要用代码代表它们之间的关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Milk</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span>  <span class="class"><span class="keyword">interface</span> <span class="title">Tea</span> </span>&#123;</div><div class="line">     <span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MilkyTeaMaterialFactory</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> Tea <span class="title">createTea</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Milk <span class="title">createMilk</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    MilkyTeaMaterialFactory factory;</div><div class="line"></div><div class="line">    Tea tea;</div><div class="line"></div><div class="line">    Milk milk;</div><div class="line"></div><div class="line">    String name;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    MilkyTea(MilkyTeaMaterialFactory factory) &#123;</div><div class="line">        <span class="keyword">this</span>.factory = factory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyTeaStore</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> MilkyTea <span class="title">orderMilkyTea</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        MilkyTea milkyTea = createPizza(type);</div><div class="line">        milkyTea.prepare();</div><div class="line">        <span class="keyword">return</span> milkyTea;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> MilkyTea <span class="title">createPizza</span><span class="params">(String type)</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NormalBlackTeaFactory</span> <span class="keyword">implements</span> <span class="title">MilkyTeaMaterialFactory</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Tea <span class="title">createTea</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BlackTea();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Milk <span class="title">createMilk</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PureMilk();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlackTea</span> <span class="keyword">implements</span> <span class="title">Tea</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Black Tea"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PureMilk</span> <span class="keyword">implements</span> <span class="title">Milk</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">display</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Pure Milk"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MilkyBlackTea</span> <span class="keyword">extends</span> <span class="title">MilkyTea</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">prepare</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.tea = factory.createTea();</div><div class="line">        <span class="keyword">this</span>.milk=factory.createMilk();</div><div class="line">        <span class="keyword">this</span>.tea.display();</div><div class="line">        <span class="keyword">this</span>.milk.display();</div><div class="line">        System.out.println(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    MilkyBlackTea(MilkyTeaMaterialFactory factory) &#123;</div><div class="line">        <span class="keyword">super</span>(factory);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GongChaStore</span> <span class="keyword">extends</span> <span class="title">MilkyTeaStore</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> MilkyTea <span class="title">createPizza</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        MilkyTea milkyTea = <span class="keyword">null</span>;</div><div class="line">        MilkyTeaMaterialFactory milkyTeaMaterialFactory = <span class="keyword">new</span> NormalBlackTeaFactory();</div><div class="line">        milkyTea = <span class="keyword">new</span> MilkyBlackTea(milkyTeaMaterialFactory);</div><div class="line">        milkyTea.setName(type);</div><div class="line">        <span class="keyword">return</span> milkyTea;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMain</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        MilkyTeaStore store = <span class="keyword">new</span> GongChaStore();</div><div class="line">        store.orderMilkyTea(<span class="string">"BlackTea"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Black Tea</div><div class="line">Pure Milk</div><div class="line">BlackTea</div></pre></td></tr></table></figure>
+<p>这个抽象工厂的代码有点长。但是如果你能理解上面的工厂方法，这个抽象工厂你就很容易理解了。抽象工厂模式，顾名思义，把工厂给抽象化。这个抽象工厂的作用就是准备各种原料（产品），这类原料（产品）是有一个整体得概念，他们可以组装成一套服务，一个更具体地产品。</p>
+<p>原料（产品）地具体实现，要下放到子类上面去具体实现。这个说法不就是工厂方法的定义。抽象工厂通常使用于一整套产品创建，工厂方法是对于一个小产品的创建。要想真正理解抽象工厂，得要先理解工厂方法模式。</p>
+<p>简单来说，抽象工厂就是工厂方法加强版，涵盖的产品更多，更丰富。在实际应用中，抽象工厂比较少应用到，特别是对于那种刚开始的项目，盲目使用抽象工厂，无疑是增加开发难度的。所以本人推荐在产品需求稳定，核心业务改动较少的前提下，重构项目时可以考虑使用抽象工厂模式，来创建对象。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章说了三个创建型模式，读完这篇文章你觉得自己对这三种模式有一个大概了解？如果没有，请细读一下代码，理解代码才能真正的认识，这三个工厂模式。</p>
+<p>当然在现代编程框架下，其实很少使用到创建型模式的，因为各种第三方插件已经帮我们考虑周全了，只是要熟悉调用他们的API即可。那么是否意味着我们学习这个工厂模式不就是白费力气了？实际编程中，工厂模式只是一个小小的工具，第三方只是把工具实现了，但是这个工具摆放的位置全靠我们开发人员来控制的。</p>
+<p>摆放正确，首先要对这个工具熟悉。唯有这样才能写出有良好的扩展性，伸缩性的系统。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/18/designPattern/Strategy-Pattern/" rel="next" title="策略模式">
+                <i class="fa fa-chevron-left"></i> 策略模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/29/designPattern/Adapter-Pattern/" rel="prev" title="适配器模式">
+                适配器模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Des Matières
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Ensemble
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">articles</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单工厂模式"><span class="nav-number">2.</span> <span class="nav-text">简单工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂方法模式"><span class="nav-number">3.</span> <span class="nav-text">工厂方法模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#情景描述"><span class="nav-number">3.1.</span> <span class="nav-text">情景描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优点和适用性"><span class="nav-number">3.2.</span> <span class="nav-text">优点和适用性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">4.</span> <span class="nav-text">抽象工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#情景描述-1"><span class="nav-number">4.1.</span> <span class="nav-text">情景描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thème &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
